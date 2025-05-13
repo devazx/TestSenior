@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using TesteSeniors.Data;
@@ -42,6 +45,17 @@ namespace TesteSeniors.Services
             return LocalizaUser;
         }
 
+        public async Task<IEnumerable> RecuperaUsuariosporUF(string Uf)
+        {
+            var usuarios = await _userContext.Usuarios
+                .Where(u => u.UF.Equals(Uf))
+                .ToListAsync();
+
+            var LocalizaUser = _mapper.Map<List<BuscaUsuarioDto>>(usuarios);
+
+            return LocalizaUser;
+        }
+
         public async Task<string> Login(LoginUsuarioDto dto)
         {
             var resultado = await _signInManager.PasswordSignInAsync(dto.Nome, dto.Senha, false, false);
@@ -52,7 +66,17 @@ namespace TesteSeniors.Services
             var token = _tokenService.GenerateToken(usuario);
 
             return token;
-        } 
+        }
+
+        [HttpGet("{id}")]
+        public async Task<BuscaUsuarioDto> recuperaUsuarioporID(Guid id)
+        {
+            Usuario user = _userContext.Usuarios.FirstOrDefault(u => u.Id == id.ToString());
+
+            BuscaUsuarioDto userDto = _mapper.Map<BuscaUsuarioDto>(user);
+
+            return userDto;
+        }
 
 
     }
