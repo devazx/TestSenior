@@ -8,7 +8,7 @@ namespace TesteSeniors.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         public UsuarioService _usuarioService;
 
@@ -35,7 +35,7 @@ namespace TesteSeniors.Controllers
         {
             var usuarios = _usuarioService.RecuperaUsuariosporUF(Uf);
 
-            return Ok(usuarios);
+            return Ok(usuarios.Result);
 
         }
 
@@ -44,7 +44,14 @@ namespace TesteSeniors.Controllers
         {
             var usuario = _usuarioService.recuperaUsuarioporID(Id);
 
-            return Ok(usuario);
+            return Ok(usuario.Result);
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync(LoginUsuarioDto dto)
+        {
+            var token = await _usuarioService.Login(dto);
+            return Ok(token);
         }
     }
 }

@@ -4,10 +4,10 @@ namespace TesteSeniors.Authorization
 {
     public class IdadeMinima : IAuthorizationRequirement
     {
+        public int Idade { get; set; }
         public IdadeMinima(int idade)
         {
             Idade = idade;
         }
-        public int Idade { get; set; }
     }
 }

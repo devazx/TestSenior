@@ -14,11 +14,11 @@ namespace TesteSeniors.Services
             {
                 new Claim("nome", usuario.Nome),
                 new Claim("id", usuario.Id),
-                new Claim(ClaimTypes.DateOfBirth, usuario.DataNascimento.ToString()),
+                new Claim(ClaimTypes.DateOfBirth, usuario.DataNascimento.ToString("yyyy-MM-dd")),
                 new Claim("loginTimestamp", DateTime.UtcNow.ToString())
             };
 
-            var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Aquiseriaachavesecretadaempresa"));
+            var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Aquiseriaachavesecretadaempresa!123"));
 
             var entrandoCredenciais = new SigningCredentials
                 (

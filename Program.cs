@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TesteSeniors.Services;
+using TesteSeniors.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TesteSeniors
 {
@@ -27,6 +29,8 @@ namespace TesteSeniors
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            builder.Services.AddSingleton<IAuthorizationHandler, IdadeAuthorization>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -41,7 +45,7 @@ namespace TesteSeniors
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey
-                    (Encoding.UTF8.GetBytes("Aquiseriaachavesecretadaempresa")),
+                    (Encoding.UTF8.GetBytes("Aquiseriaachavesecretadaempresa!123")),
                     ValidateAudience = false,
                     ValidateIssuer = false,
                     ClockSkew = TimeSpan.Zero,
@@ -50,6 +54,10 @@ namespace TesteSeniors
 
             builder.Services.AddScoped<UsuarioService>();
             builder.Services.AddScoped<TokenService>();
+            builder.Services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IdadeMinima", policy => policy.AddRequirements(new IdadeMinima(18)));
+            });
 
             var app = builder.Build();
 
@@ -61,6 +69,8 @@ namespace TesteSeniors
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

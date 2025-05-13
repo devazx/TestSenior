@@ -16,11 +16,12 @@ namespace TesteSeniors.Authorization
 
             var dataNascimento = Convert.ToDateTime(dataNascimentoClaim.Value);
 
-            var idadeUsuario = DateTime.Today.Year - dataNascimento.Year;
+            var idade = DateTime.Today.Year - dataNascimento.Year;
+            if (dataNascimento > DateTime.Today.AddYears(-idade))
+                idade--;
 
-            if (dataNascimento > DateTime.Today.AddYears(-idadeUsuario)) idadeUsuario--;
-
-            if (idadeUsuario >= requirement.Idade) context.Succeed(requirement);
+            if (idade >= requirement.Idade)
+                context.Succeed(requirement);
 
             return Task.CompletedTask;
 
