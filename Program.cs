@@ -1,6 +1,8 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TesteSeniors.Data;
+using TesteSeniors.Models;
 
 namespace TesteSeniors
 {
@@ -11,6 +13,12 @@ namespace TesteSeniors
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<UsuarioDbContext>(opt => opt.UseInMemoryDatabase("DbinMemory"));
+
+            builder.Services
+                .AddIdentity<Usuario, IdentityRole>()
+                .AddEntityFrameworkStores<UsuarioDbContext>()
+                .AddDefaultTokenProviders();
+
 
             // Add services to the container.
 
