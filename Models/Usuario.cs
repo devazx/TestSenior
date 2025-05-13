@@ -1,12 +1,14 @@
-﻿namespace TesteSeniors.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace TesteSeniors.Models
 {
-    public class Usuario
+    public class Usuario : IdentityUser
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        // Utilizado o identity User, por ja possuir como base algumas validacoes e regras de negocio
         public string Nome { get; set; }
         public int CPF { get; set; }
         public string UF { get; set; }
-        public DateTime DatadeNascimento { get; set; }
-
+        public DateTime DataNascimento { get; set; }
+        public Usuario(): base() { }
     }
 }
