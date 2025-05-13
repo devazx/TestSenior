@@ -21,10 +21,11 @@ namespace TesteSeniors.Controllers
             return Ok("Usuario Cadastrado!");
         }
         [HttpGet("BuscaUsuarios")]
-        public async Task<IActionResult> BuscaUsuario()
+        public async Task<ActionResult<BuscaUsuarioDto>> BuscaUsuario()
         {
-            var usuario = await _usuarioService.BuscaUsuario();
-            return Ok(usuario);
+            var usuario = _usuarioService.BuscaUsuario();
+
+            return Ok(usuario.Result);
         }
     }
 }

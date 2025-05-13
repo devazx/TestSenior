@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using TesteSeniors.Data;
 using TesteSeniors.Data.Dtos;
@@ -26,14 +27,17 @@ namespace TesteSeniors.Services
         public async Task CadastraUsuario(CriaUsuarioDto dto)
         {
             Usuario usuario = _mapper.Map<Usuario>(dto);
+            usuario.UserName = dto.Nome;
             IdentityResult resultado = await _userManager.CreateAsync(usuario, dto.Senha);
 
-            //if (!resultado.Succeeded) throw new ApplicationException("Falha ao cadastrar usuario.");
+            var erros = string.Join(", ", resultado.Errors.Select(e => e.Description));
+
+            if (!resultado.Succeeded) { throw new ApplicationException($"Falha ao cadastrar: {erros}"); }
         }
 
         public async Task<IEnumerable> BuscaUsuario()
         {
-            var LocalizaUser =  _mapper.Map<List<BuscaUsuarioDto>>(_userContext.Usuarios.ToList());
+            var LocalizaUser = _mapper.Map<List<BuscaUsuarioDto>>(_userContext.Usuarios.ToList());
 
             return LocalizaUser;
         }
