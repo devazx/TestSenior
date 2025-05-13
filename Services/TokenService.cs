@@ -6,7 +6,7 @@ using TesteSeniors.Models;
 
 namespace TesteSeniors.Services
 {
-    internal class TokenService
+    public class TokenService
     {
         public string GenerateToken(Usuario usuario)
         {

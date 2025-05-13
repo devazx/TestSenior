@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TesteSeniors.Data;
 using TesteSeniors.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using TesteSeniors.Services;
 
 namespace TesteSeniors
 {
@@ -19,13 +25,31 @@ namespace TesteSeniors
                 .AddEntityFrameworkStores<UsuarioDbContext>()
                 .AddDefaultTokenProviders();
 
-
-            // Add services to the container.
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey
+                    (Encoding.UTF8.GetBytes("Aquiseriaachavesecretadaempresa")),
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ClockSkew = TimeSpan.Zero,
+                };
+            });
+
+            builder.Services.AddScoped<UsuarioService>();
+            builder.Services.AddScoped<TokenService>();
 
             var app = builder.Build();
 

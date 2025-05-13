@@ -7,7 +7,7 @@ namespace TesteSeniors.Data.Dtos
         [Required]
         public string Nome { get; set; }
         [Required]
-        public int CPF { get; set; }
+        public long CPF { get; set; }
         [Required]
         public string UF { get; set; }
         [Required]

@@ -9,6 +9,7 @@ namespace TesteSeniors.Profiles
         public UsuarioProfile() 
         {
             CreateMap<CriaUsuarioDto, Usuario>();
+            CreateMap<Usuario, BuscaUsuarioDto>();
         }
     }
 }
