@@ -67,8 +67,6 @@ namespace TesteSeniors.Services
 
             return token;
         }
-
-        [HttpGet("{id}")]
         public async Task<BuscaUsuarioDto> recuperaUsuarioporID(Guid id)
         {
             Usuario user = _userContext.Usuarios.FirstOrDefault(u => u.Id == id.ToString());
@@ -76,6 +74,14 @@ namespace TesteSeniors.Services
             BuscaUsuarioDto userDto = _mapper.Map<BuscaUsuarioDto>(user);
 
             return userDto;
+        }
+
+        public async Task DeletaUsuario(Guid id)
+        {
+            var usuario = _userContext.Usuarios.FirstOrDefault(u => u.Id == id.ToString());
+
+            _userContext.Remove(usuario);
+            _userContext.SaveChanges();
         }
 
 

@@ -53,5 +53,15 @@ namespace TesteSeniors.Controllers
             var token = await _usuarioService.Login(dto);
             return Ok(token);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletaUsuario(Guid Id)
+        {
+            var userdelete = _usuarioService.DeletaUsuario(Id);
+
+            if(!userdelete.IsCompletedSuccessfully) return NoContent();
+
+            return Ok(userdelete);
+        }
     }
 }
