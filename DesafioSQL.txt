@@ -1,0 +1,23 @@
+CREATE VIEW ResumoFinanceiro AS SELECT
+   p.Nome,
+   p.cpfCnpj,
+   cap.Numero,
+   cap.CodigoFornecedor,
+   cap.DataVencimento,
+   cap.DataProrrogacao,
+   cap.Valor + cap.Acrescimo - cap.Desconto AS ValorLiquido,
+   "ContasAPagar" AS StatusConta
+FROM Pessoas p
+JOIN ContasAPagar cap ON cp.CodigoFornecedor = p.Codigo
+UNIONALL
+SELECT
+   p.Nome,
+   p.cpfCnpj,
+   cp.Numero,
+   cp.CodigoFornecedor,
+   cp.DataVencimento,
+   cp.DataPagamento
+   cp.Valor + cp.Acrescimo - cp.Desconto AS ValorLiquido,
+   "ContasPagas" AS StatusConta
+FROM Pessoas p
+JOIN ContasPagas cap ON cp.CodigoFornecedor = p.Codigo

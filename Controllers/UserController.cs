@@ -63,5 +63,15 @@ namespace TesteSeniors.Controllers
 
             return Ok(userdelete);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> AtualizaUsuario(Guid Id, [FromBody] BuscaUsuarioDto dto)
+        {
+            var user = _usuarioService.AtualizaUsuario(Id, dto);
+
+            if (!user.IsCompletedSuccessfully) return NotFound();
+
+            return NoContent();
+        }
     }
 }

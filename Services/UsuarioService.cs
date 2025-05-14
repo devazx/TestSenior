@@ -84,6 +84,14 @@ namespace TesteSeniors.Services
             _userContext.SaveChanges();
         }
 
+        public async Task AtualizaUsuario(Guid Id, [FromBody] BuscaUsuarioDto dto)
+        {
+            Usuario user = await _userContext.Usuarios.FirstOrDefaultAsync(u => u.Id == Id.ToString());
+
+            _mapper.Map(dto, user);
+            _userContext.SaveChanges();
+        }
+
 
     }
 }
